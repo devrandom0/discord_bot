@@ -7,11 +7,14 @@ import requests
 import json
 import socket
 
+# because of multi-connection supprt, i use selector
+# i could use threading, but after i searched, i chose selector
 import selectors
 sel = selectors.DefaultSelector()
 
 
 
+# send message to discord
 def send_message(url, user, msg, emb_title=None, emb_txt=None):
     data = {}
     data["content"] = msg
@@ -36,7 +39,11 @@ def send_message(url, user, msg, emb_title=None, emb_txt=None):
 
 
 
+# parse received json from last function
+# and set variables like alert name, status, description, ...
+# and merge them together and send it to 'send_message' function
 def alerter_parser(json_alert):
+    # set variables empty
     alert_status, alert_alerts_status, alert_commonLabels_alertname, alert_commonAnnotations_description = "", "", "", ""
 
 
@@ -59,6 +66,7 @@ def alerter_parser(json_alert):
         alert_commonAnnotations_description = json_alert['commonAnnotations'].get('description')
 
 
+    # merge message and set format or insert icon and send it to next function
     if alert_status.upper() == "FIRING":
         alert_status = alert_status + ' 🔥'
     elif alert_status.upper() == "RESOLVED":
@@ -74,37 +82,53 @@ def alerter_parser(json_alert):
 
 
 
-def recive_message(host, port):
+# listening and receiving messages from alertmanager in this function
+def receive_message(host, port):
+    # receive packet and open it with buffer
     def read(conn, mask):
-        recived = conn.recv(buffer)
-        if recived:
-            conn.send(recived)
+        try:
+            receive = conn.recv(buffer)
+            if receive:
+                # decode packet and split headers and body
+                # and decode body by json
+                # then send it to alerter_parser function to parse alerts
 
-            data = recived.decode('utf-8')
-            iterator = iter(data.split("\n"))
-            for line in iterator:
-                if not line.strip():
-                    break
-            body = "\n".join(iterator)
-            jdata = json.loads(body)
-            alerter_parser(jdata)
-        else:
-            sel.unregister(conn)
-            conn.close()
+                # this ping/pong test
+                conn.send(receive)
 
+                data = receive.decode('utf-8')
+                iterator = iter(data.split("\n"))
+                for line in iterator:
+                    if not line.strip():
+                        break
+                body = "\n".join(iterator)
+                jdata = json.loads(body)
+                alerter_parser(jdata)
+            else:
+                sel.unregister(conn)
+                conn.close()
+        except json.decoder.JSONDecodeError as err:
+            print(f"{err}")
+            return
+        except UnicodeDecodeError as err:
+            print(f"{err}")
+            return
 
-
+    # accepting connection and hanle it to 'read' function to parse packet data
     def accept(sock, mask):
         conn, addr = sock.accept()
         conn.setblocking(False)
         sel.register(conn, selectors.EVENT_READ, read)
 
     try:
+        # open socket on network
         with socket.socket() as sock:
             sock.bind((host, port))
             sock.listen()
             print(f"Listen on {host}:{port}\n")
             sock.setblocking(False)
+            # because of multi-connection supprt, i use selector
+            # i could use threading, but after i searched, i chose selector
             sel.register(sock, selectors.EVENT_READ, accept)
             while True:
                 events = sel.select()
@@ -128,18 +152,24 @@ if __name__ == "__main__":
     parser.add_argument('-U', '--url', help='webhook url', default=os.environ.get('URL', None), required=False)
     args = parser.parse_args()
 
+    # buffer of receive 
     buffer = 65535
     
+    # set args to variables
     host = args.host
     port = args.port
     user = args.user
     url = args.url
 
+    # check if url not exist, exit
     if not url:
         print("webhook url doesn't exist.\n")
         parser.print_help(sys.stderr)
         sys.exit(1)
 
+    # this call for test
     # send_message()
     # send_message(url, user, msg, emb_title=None, emb_txt=None)
-    recive_message(host, port)
+
+    # first step: start listening to receive messages from alertmanager
+    receive_message(host, port)
