@@ -157,7 +157,7 @@ if __name__ == "__main__":
     parser.add_argument('-U', '--url', help='webhook url', default=os.environ.get('URL', None), required=False)
     parser.add_argument('-H', '--host', help='listen address (default 0.0.0.0)', default=os.environ.get('HOST', "0.0.0.0"), required=False)
     parser.add_argument('-p', '--port', help='listen port (default 9481)', default=os.environ.get('PORT', 9481), required=False)
-    parser.add_argument('-u', '--user', help='user in discord', default=os.environ.get('USER', 'Discord-Bot'), required=False)
+    parser.add_argument('-u', '--user', help='user in discord (default Discord-Bot)', default=os.environ.get('USER', 'Discord-Bot'), required=False)
     parser.add_argument('-d', '--debug', help='Enable debug mode', action='store_true')
     args = parser.parse_args()
 
