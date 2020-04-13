@@ -31,7 +31,7 @@ def send_message(url, user, msg, emb_title=None, emb_txt=None):
         embed["title"] = emb_title
         data["embeds"].append(embed)
 
-    result = requests.post(url, data=json.dumps(data), headers={"Content-Type": "application/json"})
+        result = requests.post(url, data=json.dumps(data), headers={"Content-Type": "application/json"})
 
     try:
         result.raise_for_status()
