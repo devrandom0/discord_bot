@@ -20,6 +20,7 @@ import selectors
 # step 3
 # send message to discord
 def send_message(url, user, msg, emb_title=None, emb_txt=None):
+
     data = {}
     data["content"] = msg
     data["username"] = user
@@ -33,15 +34,14 @@ def send_message(url, user, msg, emb_title=None, emb_txt=None):
 
         result = requests.post(url, data=json.dumps(data), headers={"Content-Type": "application/json"})
 
-    try:
-        if result:
+        try:
             result.raise_for_status()
-    except requests.exceptions.HTTPError as err:
-        print(err)
-    else:
-        if debug:
-            print(json.dumps(data))
-            print("Payload delivered successfully, code {}.".format(result.status_code))
+        except requests.exceptions.HTTPError as err:
+            print(err)
+        else:
+            if debug:
+                print(json.dumps(data))
+                print("Payload delivered successfully, code {}.".format(result.status_code))
 
 
 
