@@ -38,8 +38,9 @@ def send_message(url, user, msg, emb_title=None, emb_txt=None):
     except requests.exceptions.HTTPError as err:
         print(err)
     else:
-        print(json.dumps(data))
-        print("Payload delivered successfully, code {}.".format(result.status_code))
+        if debug:
+            print(json.dumps(data))
+            print("Payload delivered successfully, code {}.".format(result.status_code))
 
 
 
@@ -157,6 +158,7 @@ if __name__ == "__main__":
     parser.add_argument('-H', '--host', help='listen address (default 0.0.0.0)', default=os.environ.get('HOST', "0.0.0.0"), required=False)
     parser.add_argument('-p', '--port', help='listen port (default 9481)', default=os.environ.get('PORT', 9481), required=False)
     parser.add_argument('-u', '--user', help='user in discord', default=os.environ.get('USER', 'Discord-Bot'), required=False)
+    parser.add_argument('-d', '--debug', help='Enable debug mode', action='store_true')
     args = parser.parse_args()
 
     # buffer of receive 
@@ -171,12 +173,15 @@ if __name__ == "__main__":
     port = args.port
     user = args.user
     url = args.url
+    debug = args.debug
 
     # check if url not exist, exit
     if not url:
         print("webhook url doesn't exist.\n")
         parser.print_help(sys.stderr)
         sys.exit(1)
+        
+    print(f"Debug mode is {debug}")
 
     # this is calling for test
     # send_message()
