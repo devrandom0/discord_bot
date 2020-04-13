@@ -10,10 +10,13 @@ import socket
 # because of multi-connection supprt, i use selector
 # i could use threading, but after i searched, i chose selector
 import selectors
-sel = selectors.DefaultSelector()
 
 
 
+# !!! check from step 0
+
+
+# step 3
 # send message to discord
 def send_message(url, user, msg, emb_title=None, emb_txt=None):
     data = {}
@@ -38,7 +41,7 @@ def send_message(url, user, msg, emb_title=None, emb_txt=None):
         print("Payload delivered successfully, code {}.".format(result.status_code))
 
 
-
+# step 2
 # parse received json from last function
 # and set variables like alert name, status, description, ...
 # and merge them together and send it to 'send_message' function
@@ -81,7 +84,7 @@ def alerter_parser(json_alert):
     send_message(url, user, msg, emb_title, emb_txt)
 
 
-
+# step 1
 # listening and receiving messages from alertmanager in this function
 def receive_message(host, port):
     # receive packet and open it with buffer
@@ -142,6 +145,7 @@ def receive_message(host, port):
 
 
 
+# step 0
 if __name__ == "__main__":
 
     # call argparse
@@ -154,6 +158,10 @@ if __name__ == "__main__":
 
     # buffer of receive 
     buffer = 65535
+
+    # because of multi-connection supprt, i use selector
+    # i could use threading, but after i searched, i chose selector
+    sel = selectors.DefaultSelector()
     
     # set args to variables
     host = args.host
