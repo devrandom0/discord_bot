@@ -20,6 +20,7 @@ import selectors
 # step 3
 # send message to discord
 def send_message(url, user, msg, emb_title=None, emb_txt=None):
+    result = ""
     data = {}
     data["content"] = msg
     data["username"] = user
