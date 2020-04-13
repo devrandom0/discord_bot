@@ -14,7 +14,7 @@ It depends on just `requests`. And you need webhook address of `discord`.
     ![Webhooks](https://github.com/sinamoghaddas/discord_bot/raw/master/image/discord-webhook-2.png "Webhooks")
 3. Click on `Create Webhook`
     ![Create webhook](https://github.com/sinamoghaddas/discord_bot/raw/master/image/discord-webhook-3.png "Create webhook")
-4. Write a name for your webhook, you can upload image, Click on `Copy` in front of webhook address, then click on `Save`
+4. Write a name for your webhook, you can upload image, Click on `Copy` in front of webhook address, then click on `Save` to finish
     ![Create webhook](https://github.com/sinamoghaddas/discord_bot/raw/master/image/discord-webhook-4.png "Create webhook")
 5. Now you have your webhook url and you can use it apps
 
