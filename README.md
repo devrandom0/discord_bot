@@ -5,7 +5,14 @@ We have an issue about network connectivity, so we develope a simple app to send
 This script in development... if you can or you want, help us to finish it. Thanks.
 
 ## Requirements
-It depends on just `requests`.
+It depends on just `requests`. And you need webhook address of `discord`.
+
+### Discord Webhook
+1. When you Discord opened, you can create channel or use general channel. Click on `Edit Channel`
+2. Click on `Webhooks`
+3. Click on `Create Webhook`
+4. Write a name for your webhook, you can upload image, Click on `Copy` in front of webhook address, then click on `Save`
+5. Now you have your webhook url and you can use it apps
 
 ## Usage
 ### Docker
