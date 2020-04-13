@@ -1,6 +1,6 @@
 # Discord Bot for Telegram
 ## Introduction
-This is very very simple bot for telegram and alertmanager.
+This is very very simple bot for discord and prometheus alertmanager.
 We have an issue about network connectivity, so we develope a simple app to send prometheus alertmanager alerts to discord.
 This script in development... if you can or you want, help us to finish it. Thanks.
 
