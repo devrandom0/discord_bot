@@ -16,6 +16,7 @@ import selectors
 # !!! check from step 0
 
 
+
 # step 3
 # send message to discord
 def send_message(url, user, msg, emb_title=None, emb_txt=None):
@@ -39,6 +40,7 @@ def send_message(url, user, msg, emb_title=None, emb_txt=None):
     else:
         print(json.dumps(data))
         print("Payload delivered successfully, code {}.".format(result.status_code))
+
 
 
 # step 2
@@ -82,6 +84,7 @@ def alerter_parser(json_alert):
     emb_txt = alert_commonAnnotations_description
 
     send_message(url, user, msg, emb_title, emb_txt)
+
 
 
 # step 1
@@ -175,7 +178,7 @@ if __name__ == "__main__":
         parser.print_help(sys.stderr)
         sys.exit(1)
 
-    # this call for test
+    # this is calling for test
     # send_message()
     # send_message(url, user, msg, emb_title=None, emb_txt=None)
 
