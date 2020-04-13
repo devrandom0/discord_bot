@@ -44,7 +44,7 @@ optional arguments:
   -U URL, --url URL     webhook url
   -H HOST, --host HOST  listen address (default 0.0.0.0)
   -p PORT, --port PORT  listen port (default 9481)
-  -u USER, --user USER  user in discord
+  -u USER, --user USER  user in discord (default Discord-Bot)
 
 
 
